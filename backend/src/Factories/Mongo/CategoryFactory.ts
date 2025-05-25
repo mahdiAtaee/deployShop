@@ -14,10 +14,15 @@ export async function makeAttributesItem(
   const attributes: IAttribute[] = [];
   for (let index = 0; index < count; index++) {
     const defaultAttributeParams = {
-      title: faker.commerce.productAdjective(),
+      name: {
+        fa: faker.lorem.word(),
+        en: faker.lorem.word(),
+      },
       slug: faker.lorem.slug(),
-      filterable: randomNumber > 5 ? true : false,
-      hasPrice: randomNumber > 5 ? true : false,
+      type: faker.random.arrayElement([]),
+      values: [],
+      filterable: true,
+      hasPrice: false,
     };
     const finalizeAttribute = { ...defaultAttributeParams, ...params };
     attributes.push(finalizeAttribute);
@@ -44,9 +49,17 @@ export async function create(count: number = 1, params?: Partial<ICategory>) {
   const groups: IAttributeCategory[] = await makeAttributeGroup();
   for (let index = 1; index <= count; index++) {
     const defaultUserParams = {
-      title: faker.commerce.productAdjective(),
+      name: {
+        FA: faker.commerce.name(),
+        EN: faker.commerce.name(),
+
+      },
+      parentId: null,
+      level: 1,
+      icon: "",
+      isActive: true,
       slug: faker.lorem.slug(),
-      groups,
+      filterGroups:groups,
     };
     const categoryParams = { ...defaultUserParams, ...params };
     const newCategory = new CategoryModel(categoryParams);
