@@ -1,0 +1,37 @@
+{
+  "name": "shop_front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.3",
+    "@hookform/resolvers": "^5.0.1",
+    "@tailwindcss/postcss": "^4.1.6",
+    "axios": "^1.8.4",
+    "lodash": "^4.17.21",
+    "next": "15.2.4",
+    "postcss": "^8.5.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.4",
+    "react-icons": "^5.5.0",
+    "react-modal": "^3.16.3",
+    "react-stars": "^2.2.5",
+    "swiper": "^11.2.6",
+    "tailwindcss": "^4.1.6",
+    "zod": "^3.25.20"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.23.0",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "15.2.4",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0"
+  }
+}

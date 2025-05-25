@@ -1,0 +1,27 @@
+@font-face {
+    font-family: IRANYekan;
+    font-style: normal;
+    font-weight: bold;
+    src: url('/assets/font/IRANYekan.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: IRANSansWeb_Light;
+    font-style: normal;
+    font-weight: bold;
+    src: url('/assets/font/IRANSansWeb_Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: vazir;
+    font-style: normal;
+    font-weight: bold;
+    src: url('/assets/fonts/Vazir/Vazir.eot');
+    src: url('/assets/fonts/Vazir/Vazir.eot') format('embedded-opentype'),
+        /* IE6-8 */
+        url('/assets/fonts/Vazir/Vazir.woff') format('woff2'),
+        /* FF39+,Chrome36+, Opera24+*/
+        url('/assets/fonts/Vazir/Vazir.woff') format('woff'),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+        url('/assets/fonts/Vazir/Vazir.ttf') format('truetype');
+}

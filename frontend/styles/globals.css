@@ -1,0 +1,223 @@
+@import "tailwindcss";
+@tailwind utilities;
+@import "./fonts.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@layer base {
+
+  html,
+  body {
+    max-width: 100dvw;
+    overflow-x: hidden;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--background);
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: vazir;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+}
+
+@layer utilities {
+  .text-md {
+    @apply text-[0.9rem]
+  }
+
+  .text-vazir {
+    font-family: vazir;
+  }
+
+  .text-iranYekan {
+    font-family: IRANYekan;
+  }
+
+  .text-iranSans {
+    font-family: IRANSansWeb_Light;
+  }
+
+  .nav-hover-btn {
+    @apply relative text-xs uppercase after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+  }
+
+  .pagination-bullet {
+    @apply bg-gray-400 w-1.5 h-1.5 inline-block rounded-full ml-1 cursor-pointer transition-all duration-300 ease-in-out
+  }
+
+  .pagination-bullet-active {
+    @apply bg-white w-4
+  }
+
+  .product-card .swiper-wrapper {
+    height: 410px !important;
+    align-items: stretch;
+  }
+
+  .wave-complete{
+    @apply after:absolute after:w-96 after:h-96 after:rounded-l-full after:bg-white after:-top-16 after:right-52 before:absolute before:w-96 before:h-96 before:rounded-full before:bg-white before:z-10 before:-bottom-8 before:right-32
+  }
+
+}
+
+
+.custom-control-label::before,
+.custom-control-label::after {
+    top: 50%;
+    transform: translateY(-50%);
+    right: -1.5rem;
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.custom-control-label::before {
+    border: 1px solid #e4e6ea;
+}
+
+.custom-control-label {
+    padding-right: 10px;
+}
+
+.custom-switch .custom-control-label::before {
+    right: -2.25rem;
+    width: 36px;
+    height: 24px;
+    pointer-events: all;
+    border-radius: 5rem;
+    background: #e8e8e8;
+}
+
+.custom-switch .custom-control-label:after {
+    top: calc(.25rem - 1px);
+    left: calc(-2.25rem + 3px);
+    width: calc(1.4rem - 2px);
+    height: calc(1.4rem - 2px);
+    border-radius: 5rem;
+    background-color: #fff;
+}
+
+.custom-switch .custom-control-input:checked~.custom-control-label:after {
+    -webkit-transform: translateX(.95rem);
+    -ms-transform: translateX(.95rem);
+    transform: translateX(.95rem);
+}
+
+.custom-switch .custom-control-label {
+    padding-right: 20px;
+}
+
+.custom-file-input:focus~.custom-file-label,
+.custom-control-input:focus~.custom-control-label::before {
+    box-shadow: none;
+}
+
+.custom-control-input:checked~.custom-control-label::before,
+.custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border: 1px solid #e4e6ea;
+}
+
+.text-dark-green {
+  color: #047c04;
+}
+
+.height-300 {
+  height: 300px;
+}
+
+.object-cover {
+  object-fit: cover;
+}
+
+.small-banner {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  border-radius: 15px;
+}
+
+.small-banner img {
+  border-radius: 15px;
+}
+
+.arrow-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-slider {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  padding: .3rem;
+  border: 1px solid rgb(90, 189, 255);
+  border-radius: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.img-slider:hover {
+  border-width: 3px;
+}
+
+.ReactModal__Overlay{
+  z-index: 10;
+}
+
+.ReactModal__Overlay{
+  background-color: #3535358e !important;
+}
+
+@media screen and (max-width: 768px) {
+  .img-slider {
+    width: 100px;
+    height: 100px;
+  }
+
+  .banner-section {
+    height: 220px;
+  }
+
+}
+
+@media screen and (max-width: 480px) {
+  .img-slider {
+    width: 80px;
+    height: 80px;
+  }
+
+  .banner-section {
+    height: 120px;
+  }
+
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
