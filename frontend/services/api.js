@@ -1,6 +1,6 @@
 import axios from "axios"
 
-axios.defaults.baseURL = "http://localhost:5000/api/v1"
+axios.defaults.baseURL = "https://shop-seven-mocha.vercel.app/api/v1"
 
 export const get = (url, configs = {}) => {
     return axios.get(url, configs)
