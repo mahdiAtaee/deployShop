@@ -6,7 +6,7 @@ import { Application, static as static_root } from "express";
 export default function boot(app: Application) {
   app.use(cors(
     {
-      origin: ["https://shop-seven-mocha.vercel.app"],
+      origin: ["https://shopfront-git-master-mahdiataees-projects.vercel.app"],
       methods: ["POST","GET","PUT","PATCH"],
       credentials:true
     }
