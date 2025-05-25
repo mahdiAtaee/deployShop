@@ -14,7 +14,7 @@ import DiscountedProduct from "@/components/home/DiscountedProduct";
 export default function Home() {
   return (
     <div>
-      /*<ShopLayout title="فروشگاه">
+    {/*<ShopLayout title="فروشگاه">
         <Header products={props.popular}/>
         <BestSellers products={props.best_sellers} />
         <Banner />
@@ -23,7 +23,7 @@ export default function Home() {
         <Latests products={props.latest} />
         <DiscountedProduct products={props.popular}/>
         <Popular products={props.popular} />
-      </ShopLayout>*/
+      </ShopLayout>*/}
     HOME PAGE IS WORKING
     </div>
   );
