@@ -14,7 +14,7 @@ import DiscountedProduct from "@/components/home/DiscountedProduct";
 export default function Home(props) {
   return (
     <div>
-      <ShopLayout title="فروشگاه">
+      /*<ShopLayout title="فروشگاه">
         <Header products={props.popular}/>
         <BestSellers products={props.best_sellers} />
         <Banner />
@@ -23,11 +23,12 @@ export default function Home(props) {
         <Latests products={props.latest} />
         <DiscountedProduct products={props.popular}/>
         <Popular products={props.popular} />
-      </ShopLayout>
+      </ShopLayout>*/
+    HOME PAGE IS WORKING
     </div>
   );
 }
-
+/*
 export async function getStaticProps() {
   const result = await API.get('/home')
   
@@ -40,3 +41,4 @@ export async function getStaticProps() {
     }
   }
 }
+*/
