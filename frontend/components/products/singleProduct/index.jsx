@@ -14,10 +14,14 @@ const SingleProduct = ({ product, comments, relatedProducts }) => {
         <section className="w-dvw min-h-dvh overflow-x-hidden">
             <div className='w-screen grid grid-cols-1 gird-rows-2 md:grid-cols-2 md:grid-rows-1 gap-8 p-4'>
                 <div className='w-full'>
-                    <Gallery images={product.gallery} />
+                    {product &&
+                        <Gallery images={product.gallery} />
+                    }
                 </div>
                 <div className='w-full p-4'>
-                    <Details product={product} />
+                    {product &&
+                        <Details product={product} />
+                    }
                 </div>
             </div>
             <div className="w-screen my-6">
@@ -60,17 +64,19 @@ const SingleProduct = ({ product, comments, relatedProducts }) => {
                             )}
                         </Tab>
                     </TabList>
-                    <TabPanels className="p-4">
-                        <TabPanel>
-                            <Description describe={product.description} />
-                        </TabPanel>
-                        <TabPanel>
-                            <Attributes attributes={product.attributes} />
-                        </TabPanel>
-                        <TabPanel>
-                            <Comments comments={comments} score={product.totalScore} />
-                        </TabPanel>
-                    </TabPanels>
+                    {product &&
+                        <TabPanels className="p-4">
+                            <TabPanel>
+                                <Description describe={product.description} />
+                            </TabPanel>
+                            <TabPanel>
+                                <Attributes attributes={product.attributes} />
+                            </TabPanel>
+                            <TabPanel>
+                                <Comments comments={comments} score={product.totalScore} />
+                            </TabPanel>
+                        </TabPanels>
+                    }
                 </TabGroup>
             </div>
             <div className='w-screen my-6'>
