@@ -12,5 +12,5 @@ export default function boot(app: Application) {
   ));
   app.use(bodyParser.json());
   app.use(fileUpload());
-  app.use('/contents', static_root('public/contents'));
+  app.use('/contents', static_root(join(__dirname, '../public/contents')));
 }
