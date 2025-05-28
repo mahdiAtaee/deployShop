@@ -18,7 +18,7 @@ const ProductSchema: Schema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: "Categories" },
   //attributes: { type: [Object], required: true },
   attributes: [{
-    filterGroupId: { type: String, unique: true }, // ارجاع به گروه فیلتر
+    filterGroupId: { type: String }, // ارجاع به گروه فیلتر
     filterKey: { type: String, required: true }, // مطابق با key در مدل دسته‌بندی
     value: {
       type: Schema.Types.Mixed, // می‌تواند رشته، عدد، آرایه یا بولین باشد
@@ -37,15 +37,15 @@ const ProductSchema: Schema = new Schema({
   status: { type: String, enum: ProductStatus, default: ProductStatus.INIT },
 });
 
-ProductSchema.virtual('thumbnailUrl').get(function (this: IProducts) {
-  return `${process.env.APP_URL}/contents/${this.thumbnail}`
-})
+// ProductSchema.virtual('thumbnailUrl').get(function (this: IProducts) {
+//   return `${process.env.APP_URL}/contents/${this.thumbnail}`
+// })
 
 
-ProductSchema.virtual('galleryUrl').get(function (this: IProducts) {
-  return this.gallery?.map((item: string) => {
-    return `${process.env.APP_URL}/contents/${item}`
-  })
-})
+// ProductSchema.virtual('galleryUrl').get(function (this: IProducts) {
+//   return this.gallery?.map((item: string) => {
+//     return `${process.env.APP_URL}/contents/${item}`
+//   })
+// })
 
 export default model<IProducts>("Product", ProductSchema);

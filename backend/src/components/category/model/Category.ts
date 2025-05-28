@@ -34,7 +34,7 @@ const categorySchema: Schema = new Schema({
             fa: { type: String, required: true },
             en: { type: String }
           },
-          slug: { type: String, required: true, unique: true }, // شناسه فیلتر
+          slug: { type: String, required: true }, // شناسه فیلتر
           type: {
             type: String,
             enum: FilterValueEnum,

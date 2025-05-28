@@ -32,24 +32,26 @@ class Controller {
       category: req.body.category,
       variation: JSON.parse(req.body.variation),
       priceVariation: JSON.parse(req.body.priceVariation),
-      attributes: JSON.parse(req.body.attributes),
+      attributes: req.body.attributes ? JSON.parse(req.body.attributes) : [],
+      gallery: req.body.gallery,
+      thumbnail: req.body.thumbnail
     };
     const newProduct = await this.productRepository.create(productData);
-    if (req.files) {
-      const thumbnail: UploadedFile = req.files?.thumbnail as UploadedFile;
-      const thumbnailName: string = await this.uploadService.upload(thumbnail);
-      const gallery: UploadedFile[] = req.files.gallery as UploadedFile[];
-      const galleryName: string[] = await this.uploadService.uploadMany(
-        gallery
-      );
-      await this.productRepository.updateOne(
-        { _id: newProduct._id },
-        {
-          thumbnail: thumbnailName,
-          gallery: galleryName,
-        }
-      );
-    }
+    // if (req.files) {
+    //   const thumbnail: UploadedFile = req.files?.thumbnail as UploadedFile;
+    //   const thumbnailName: string = await this.uploadService.upload(thumbnail);
+    //   const gallery: UploadedFile[] = req.files.gallery as UploadedFile[];
+    //   const galleryName: string[] = await this.uploadService.uploadMany(
+    //     gallery
+    //   );
+    //   await this.productRepository.updateOne(
+    //     { _id: newProduct._id },
+    //     {
+    //       thumbnail: thumbnailName,
+    //       gallery: galleryName,
+    //     }
+    //   );
+    // }
     res.send({ newProduct });
   }
 }

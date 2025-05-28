@@ -16,8 +16,8 @@ export default class Transformer implements ITransformer<IProducts> {
             attributes: item.attributes,
             category: item.category,
             discountedPrice: item.discountedPrice,
-            thumbnail: item.thumbnailUrl,
-            gallery: item.galleryUrl,
+            thumbnail: item.thumbnail,
+            gallery: item.gallery,
         };
     }
 
