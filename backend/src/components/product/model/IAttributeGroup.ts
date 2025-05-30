@@ -1,6 +1,9 @@
-import IProductAttribute from "./IProductAttribute";
-
 export default interface IAttributeGroup {
-  title: string;
-  attributes: IProductAttribute[];
+  filterGroupId: string
+  filterKey: string
+  value: any
+  displayValue: {
+    fa: string,
+    en: string
+  }
 }

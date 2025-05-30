@@ -32,6 +32,7 @@ class Controller {
       category: req.body.category,
       variation: JSON.parse(req.body.variation),
       priceVariation: JSON.parse(req.body.priceVariation),
+      description: req.body.description,
       attributes: req.body.attributes ? JSON.parse(req.body.attributes) : [],
       gallery: req.body.gallery,
       thumbnail: req.body.thumbnail

@@ -30,7 +30,7 @@ export default class Controller {
                 throw new ServerException('در حال حاضر نمی توان سفارش جدید اضافه کرد')
             }
             const paymentResult = await this.paymentService.payOrder(newOrder as IOrder, req.body.payment_method)
-            console.log(paymentResult);
+            
 
             res.send({
                 success: true

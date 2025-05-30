@@ -24,7 +24,7 @@ export default class Controller {
                 newAddresses = [{ ...req.body }]
             }
             const result = await this.usersRepository.updateOne({ _id: id }, { addresses: newAddresses })
-            console.log(result);
+            
             
             if(!result){
                 throw new ServerException('امکان ذخیره سازی آدرس جدید در حال حاضر مقدور نمی باشد')

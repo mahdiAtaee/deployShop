@@ -4,6 +4,7 @@ import IProductAttribute from "./IProductAttribute";
 import IAttributeGroup from "./IAttributeGroup";
 import IProductVariation from "./IProductVariation";
 import IPriceVariation from "./IPriceVariation";
+import ICategory from "../../category/model/ICategory";
 
 export default interface IProducts extends Document {
   title: string;
@@ -14,7 +15,8 @@ export default interface IProducts extends Document {
   gallery?: string[];
   galleryUrl?: string[];
   category: string;
-  attributes: IAttributeGroup[];
+  // attributes: IAttributeGroup[];
+  attributes: any,
   variation: IProductVariation[];
   priceVariation: IPriceVariation[];
   created_at: Date;
@@ -26,4 +28,8 @@ export default interface IProducts extends Document {
   views_count: number,
   status: ProductStatus;
   description: string
+}
+
+export interface IProductPopulated extends Omit<IProducts, 'category'> {
+  category: ICategory;
 }

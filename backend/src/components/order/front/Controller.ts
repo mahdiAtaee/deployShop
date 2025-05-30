@@ -46,7 +46,7 @@ export default class Controller {
     public async list(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = await verify(req.headers.authorization as string)
-            console.log(id);
+            
             
             const orders = await this.orderRepository.findMany({ user: id }, undefined, { perPage: 10, offset: 0 })
             res.send(this.transformer.collection(orders))

@@ -19,7 +19,7 @@ export default class Controller {
         const bestSellers = await this.productRepository.findMany({}, undefined, { perPage: 6, offset: 0 }, { purchase_count: -1 })
         const popular = await this.productRepository.findMany({}, undefined, { perPage: 6, offset: 0 }, { total_score: -1 })
         const mostViewed = await this.productRepository.findMany({}, undefined, { perPage: 6, offset: 0 }, { views_count: -1 })
-        console.log(latest);
+        
         
         res.send({
             latest: await this.productTransformer.collection(latest),

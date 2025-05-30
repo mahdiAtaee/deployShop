@@ -25,7 +25,6 @@ class CategoryController {
         ...req.body,
         hash: uuid()
       }
-      console.log(data);
       
       const newCategory = await Category.create({ ...req.body });
       return res.send({ success: true, newCategory });

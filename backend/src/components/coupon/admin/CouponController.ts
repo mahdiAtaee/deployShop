@@ -44,7 +44,6 @@ export default class CouponController {
             expires_at: req.body.expires_at,
             constraints: req.body.constraints
         }).then(response => {
-            console.log(response);
             res.send({
                 success: true,
                 message: "کد تخفیف جدید با موفقیت انجام شد"
