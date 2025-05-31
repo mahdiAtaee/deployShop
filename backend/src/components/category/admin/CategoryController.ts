@@ -17,18 +17,19 @@ class CategoryController {
     this.categoryTransformer = new CategoryTransformer()
     this.parentList = this.parentList.bind(this)
     this.list = this.list.bind(this)
+    this.store = this.store.bind(this)
   }
 
   public async store(req: Request, res: Response, next: NextFunction) {
-    try {
-      const data = {
-        ...req.body,
-        hash: uuid()
-      }
+    try {        
+      console.log(req.body);
+               
+      const newCategory = await this.categoryRepository.create({ ...req.body });
       
-      const newCategory = await Category.create({ ...req.body });
       return res.send({ success: true, newCategory });
     } catch (error) {
+      console.log(error);
+      
       next(error)
     }
   }

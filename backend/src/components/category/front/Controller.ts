@@ -24,6 +24,8 @@ class Controller {
     }
 
     public async products(req: Request, res: Response, next: NextFunction) {
+        console.log("in product category",req.body);
+        
         const productRepository = new ProductMongoRepository()
         const productTransformer = new Transformer()
         try {

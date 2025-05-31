@@ -30,6 +30,7 @@ const categorySchema: Schema = new Schema({
       slug: { type: String, required: true }, // شناسه منحصر به فرد گروه
       filters: [ // فیلترهای این گروه
         {
+          uid: { type: String }, // شناسه یکتا برای هر فیلتر
           name: {
             fa: { type: String, required: true },
             en: { type: String }
@@ -40,6 +41,19 @@ const categorySchema: Schema = new Schema({
             enum: FilterValueEnum,
             required: true
           },
+          options: [
+            {
+              value: { type: String }, // slug قابل سرچ (مثلاً "ceramic_shield")
+              label: { type: String }
+            }
+          ],
+          rangeBuckets: [
+            {
+              min: { type: Number },
+              max: { type: Number },
+              label: { type: String }
+            }
+          ],
           values: { type: [] }, // مقادیر پیش‌فرض
           filterable: { type: Boolean, default: true },
           hasPrice: { type: Boolean, default: false }

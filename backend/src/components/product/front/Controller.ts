@@ -10,6 +10,7 @@ import * as _ from 'lodash'
 import NotFoundException from "../../exceptions/NotFoundException";
 import ICategoryRepository from "../../category/repositories/ICategoryRepository";
 import CategoryMongoRepository from "../../category/repositories/CategoryMongoRepository";
+import { urlencoded } from "body-parser";
 
 
 class Controller {
@@ -59,6 +60,7 @@ class Controller {
                     groupTitle: group?.name || groupID,
                     attributes: attributes.map(attr => {
                         const filter = group?.filters.find(f => f.slug === attr.filterKey);
+                        console.log(filter);
 
                         return {
                             label: filter?.name?.fa || attr.filterKey,
@@ -102,17 +104,43 @@ class Controller {
         const categoryRepository: ICategoryRepository = new CategoryMongoRepository()
         const { key: slug } = req.params
 
+
         const perPage = 9
-        const page = req.query || 1
+        const page = req.query.page || 1
         const offset = Math.ceil((page as unknown as number - 1) / perPage)
         try {
             const category = await categoryRepository.findBySlug(slug)
-            const products = await this.productRepository.findMany({ 'category': category?._id }, ['category'], { perPage, offset }, { created_at: -1 })
 
-
-            if (!products || products.length === 0) {
-                throw new NotFoundException('محصولی یافت نشد!')
+            const productQuery: any = {
+                'category': category?._id
             }
+
+            const rowQuery = { ...req.query }
+            console.log(req.query);
+
+            delete rowQuery['slug']
+
+            const filters: { filterKey: string; value: string | number }[] = []
+
+            for (const [key, value] of Object.entries(rowQuery)) {
+                const raw = value as string;
+                const newRaw = decodeURIComponent(raw);
+                const values = newRaw.split(',') ? newRaw.split(',') : [newRaw];
+
+                for (const val of values) {
+                    filters.push({
+                        filterKey: key,
+                        value: val
+                    });
+                }
+            }
+
+            if (filters.length > 0) {
+                const filterQuery = this.buildAttributeFilterQuery(filters);
+                Object.assign(productQuery, filterQuery);
+            }
+
+            const products = await this.productRepository.findMany(productQuery, ['category'], { perPage, offset }, { created_at: -1 })
 
             res.send({
                 success: true,
@@ -123,6 +151,41 @@ class Controller {
         catch (error) {
             next(error)
         }
+    }
+
+    private buildAttributeFilterQuery(filters: { filterKey: string; value: string | number }[]) {
+        const grouped = _.groupBy(filters, 'filterKey');
+
+        const andConditions = Object.entries(grouped).map(([filterKey, groupValues]) => {
+            const orConditions: any[] = [];
+
+            for (const { value } of groupValues) {
+                const rangeMatch = typeof value === 'string' && value.match(/^(\d+)-(\d+)$/);
+                if (rangeMatch) {
+                    const min = Number(rangeMatch[1]);
+                    const max = Number(rangeMatch[2]);
+                    orConditions.push({ numericValue: { $gte: min, $lte: max } });
+                } else {
+                    orConditions.push({ value }, { filterValue: value });
+
+                    const num = Number(value);
+                    if (!isNaN(num)) {
+                        orConditions.push({ numericValue: num });
+                    }
+                }
+            }
+
+            return {
+                attributes: {
+                    $elemMatch: {
+                        filterKey,
+                        $or: orConditions
+                    }
+                }
+            };
+        });
+
+        return { $and: andConditions };
     }
 }
 

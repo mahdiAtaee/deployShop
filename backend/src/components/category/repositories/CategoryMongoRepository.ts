@@ -56,7 +56,9 @@ export default class CategoryMongoRepository implements ICategoryRepository {
   }
 
   public async create(params: any): Promise<ICategory> {
+    console.log(params);
     const newPayment = new Category({ ...params });
+    
     return newPayment.save();
   }
 

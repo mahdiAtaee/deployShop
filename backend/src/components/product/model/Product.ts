@@ -27,7 +27,9 @@ const ProductSchema: Schema = new Schema({
     displayValue: { // مقدار نمایشی (برای مواردی که نیاز به نمایش متفاوت دارد)
       fa: { type: String },
       en: { type: String }
-    }
+    },
+    numericValue: { type: Number }, // برای range یا number
+    filterValue: { type: String } // برای select
   }],
   description: { type: String },
   variation: { type: [Object] },
