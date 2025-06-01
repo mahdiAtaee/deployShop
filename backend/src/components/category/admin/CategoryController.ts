@@ -22,8 +22,6 @@ class CategoryController {
 
   public async store(req: Request, res: Response, next: NextFunction) {
     try {        
-      console.log(req.body);
-               
       const newCategory = await this.categoryRepository.create({ ...req.body });
       
       return res.send({ success: true, newCategory });

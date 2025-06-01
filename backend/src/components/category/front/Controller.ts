@@ -24,45 +24,28 @@ class Controller {
     }
 
     public async products(req: Request, res: Response, next: NextFunction) {
-        console.log("in product category",req.body);
-        
         const productRepository = new ProductMongoRepository()
         const productTransformer = new Transformer()
         try {
             const { slug } = req.params
             const category = await this.categoryRepository.findBySlug(slug)
+           
             if (!category) {
                 throw new NotFoundException("دسته بندی مورد نظر یافت نشد")
             }
             const productQuery: any = {
                 category: category._id
             }
-            const rowQuery = req.query
-            delete rowQuery['slug']
-            if (_.size(rowQuery) > 0) {
-                const titles: string[] = []
-                const slugs: string[] = []
-
-                _.forEach(rowQuery, (value, key) => {
-                    const values = value as string
-                    titles.push(key)
-                    if (values.includes(',')) {
-                        slugs.push(...values.split(','))
-                    } else {
-                        slugs.push(values)
-                    }
-                })
-                productQuery['attributes.title'] = { $in: titles }
-                productQuery['attributes.attributes.slug'] = { $in: slugs }
-            }
 
             const products = await productRepository.findMany(productQuery)
+            
             res.send({
                 success: true,
                 products: productTransformer.collection(products),
                 category
             })
         } catch (error) {
+            console.log("error in category products", error);
             next(error)
         }
     }

@@ -24,8 +24,9 @@ class Controller {
         this.comments = this.comments.bind(this)
         this.categoryProducts = this.categoryProducts.bind(this)
     }
-    public async index(req: Request, res: Response) {
-        const perPage = 9
+    public async index(req: Request, res: Response, next: NextFunction) {
+        try {
+            const perPage = 9
         const page = req.query || 1
         const offset = Math.ceil((page as unknown as number - 1) / perPage)
         const products = await this.productRepository.findMany({}, [], { perPage, offset }, { created_at: -1 })
@@ -37,6 +38,11 @@ class Controller {
             })
         }
         res.send(this.productTransformer.collection(products))
+        } catch (error) {
+            console.log(error);
+            next(error)
+            
+        }
     }
 
     public async find(req: Request, res: Response, next: NextFunction) {
@@ -60,8 +66,7 @@ class Controller {
                     groupTitle: group?.name || groupID,
                     attributes: attributes.map(attr => {
                         const filter = group?.filters.find(f => f.slug === attr.filterKey);
-                        console.log(filter);
-
+                        
                         return {
                             label: filter?.name?.fa || attr.filterKey,
                             value: attr.displayValue?.fa || attr.value
@@ -116,8 +121,6 @@ class Controller {
             }
 
             const rowQuery = { ...req.query }
-            console.log(req.query);
-
             delete rowQuery['slug']
 
             const filters: { filterKey: string; value: string | number }[] = []
@@ -141,7 +144,8 @@ class Controller {
             }
 
             const products = await this.productRepository.findMany(productQuery, ['category'], { perPage, offset }, { created_at: -1 })
-
+            console.log(category);
+            
             res.send({
                 success: true,
                 category,
