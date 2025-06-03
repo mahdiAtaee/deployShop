@@ -12,6 +12,21 @@ class Controller {
         this.categoryRepository = new CategoryMongoRepository();
         this.list = this.list.bind(this)
         this.products = this.products.bind(this)
+        this.find = this.find.bind(this)
+    }
+
+    public async find(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { slug } = req.params;
+            const category = await this.categoryRepository.findBySlug(slug);
+            if(!category) {
+                throw new NotFoundException("دسته بندی مورد نظر یافت نشد");
+            }
+
+            return res.send({ success: true, category });
+        } catch (error) {
+            next(error)
+        }
     }
 
     public async list(req: Request, res: Response, next: NextFunction) {

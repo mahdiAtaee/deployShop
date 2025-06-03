@@ -4,6 +4,7 @@ const controller = new Controller();
 const router: Router = Router();
 
 router.get("/", controller.list);
+router.get('/:slug', controller.find)
 router.get("/:slug/products", controller.products)
 
 export default router;
