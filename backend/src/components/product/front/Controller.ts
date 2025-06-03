@@ -10,7 +10,7 @@ import * as _ from 'lodash'
 import NotFoundException from "../../exceptions/NotFoundException";
 import ICategoryRepository from "../../category/repositories/ICategoryRepository";
 import CategoryMongoRepository from "../../category/repositories/CategoryMongoRepository";
-import { urlencoded } from "body-parser";
+import ICategory from "../../category/model/ICategory";
 
 
 class Controller {
@@ -23,25 +23,26 @@ class Controller {
         this.find = this.find.bind(this)
         this.comments = this.comments.bind(this)
         this.categoryProducts = this.categoryProducts.bind(this)
+        this.details = this.details.bind(this)
     }
     public async index(req: Request, res: Response, next: NextFunction) {
         try {
             const perPage = 9
-        const page = req.query || 1
-        const offset = Math.ceil((page as unknown as number - 1) / perPage)
-        const products = await this.productRepository.findMany({}, [], { perPage, offset }, { created_at: -1 })
+            const page = req.query || 1
+            const offset = Math.ceil((page as unknown as number - 1) / perPage)
+            const products = await this.productRepository.findMany({}, [], { perPage, offset }, { created_at: -1 })
 
-        if (!products) {
-            res.status(404).send({
-                success: false,
-                message: "محصولی یافت نشد!"
-            })
-        }
-        res.send(this.productTransformer.collection(products))
+            if (!products) {
+                res.status(404).send({
+                    success: false,
+                    message: "محصولی یافت نشد!"
+                })
+            }
+            res.send(this.productTransformer.collection(products))
         } catch (error) {
             console.log(error);
             next(error)
-            
+
         }
     }
 
@@ -66,7 +67,7 @@ class Controller {
                     groupTitle: group?.name || groupID,
                     attributes: attributes.map(attr => {
                         const filter = group?.filters.find(f => f.slug === attr.filterKey);
-                        
+
                         return {
                             label: filter?.name?.fa || attr.filterKey,
                             value: attr.displayValue?.fa || attr.value
@@ -144,8 +145,8 @@ class Controller {
             }
 
             const products = await this.productRepository.findMany(productQuery, ['category'], { perPage, offset }, { created_at: -1 })
-            console.log(category);
-            
+
+
             res.send({
                 success: true,
                 category,
@@ -190,6 +191,76 @@ class Controller {
         });
 
         return { $and: andConditions };
+    }
+
+    public async details(req: Request, res: Response, next: NextFunction) {
+        const commentRepository = new CommentMongoRepository()
+        const commentTransformer = new CommentTransformer()
+        try {
+            const { id } = req.params
+
+            const product = await this.productRepository.findOne(id as string, ['category'])
+            if (!product) {
+                throw new NotFoundException('محصول مورد نظر یافت نشد!')
+            }
+
+            const comments = await commentRepository.findByProduct(id, ['user'])
+            
+
+            const relatedProducts = await this.productRepository.findMany({
+                category: typeof product.category === 'object' && product.category !== null && '_id' in product.category
+                    ? (product.category as { _id: string })._id
+                    : product.category,
+                _id: { $ne: product._id } // Exclude the current product
+            }, ['category'], { perPage: 5, offset: 0 }, { created_at: -1 })
+
+            console.log(relatedProducts);
+            
+
+            // grouped attributes by filterGroup
+            const productWithDetails = product as unknown as IProductPopulated
+            const grouped = _.groupBy(productWithDetails.attributes, 'filterGroupId')
+
+            // map grouped attributes to specs
+            // each group has a title and attributes
+            const specs = Object.entries(grouped).map(([groupID, attributes]) => {
+                // find group by hash
+                // groupID in product attribute is the hash of the filterGroup in category
+                const group = productWithDetails.category.filterGroups.find(g => g.hash === groupID)
+
+                return {
+                    groupTitle: group?.name || groupID,
+                    attributes: attributes.map(attr => {
+                        // find filter by slug in group
+                        // attr.filterKey in product attribute is the slug of the filter in group category
+                        const filter = group?.filters.find(f => f.slug === attr.filterKey)
+
+                        return {
+                            label: filter?.name?.fa || attr.filterKey,
+                            value: attr.displayValue?.fa || attr.value
+                        }
+                    })
+                }
+            })
+
+            const plainProduct = {
+                ...product.toObject(),
+                attributes: specs
+            }
+
+
+
+            res.send({
+                success: true,
+                product: this.productTransformer.transform(plainProduct as IProducts),
+                comments: commentTransformer.collection(comments),
+                relatedProducts: this.productTransformer.collection(relatedProducts)
+            })
+        } catch (error) {
+            console.log(error);
+
+            next(error)
+        }
     }
 }
 
