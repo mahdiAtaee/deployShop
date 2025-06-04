@@ -10,7 +10,6 @@ import * as _ from 'lodash'
 import NotFoundException from "../../exceptions/NotFoundException";
 import ICategoryRepository from "../../category/repositories/ICategoryRepository";
 import CategoryMongoRepository from "../../category/repositories/CategoryMongoRepository";
-import ICategory from "../../category/model/ICategory";
 
 
 class Controller {
@@ -24,6 +23,7 @@ class Controller {
         this.comments = this.comments.bind(this)
         this.categoryProducts = this.categoryProducts.bind(this)
         this.details = this.details.bind(this)
+        this.search = this.search.bind(this)
     }
     public async index(req: Request, res: Response, next: NextFunction) {
         try {
@@ -205,7 +205,7 @@ class Controller {
             }
 
             const comments = await commentRepository.findByProduct(id, ['user'])
-            
+
 
             const relatedProducts = await this.productRepository.findMany({
                 category: typeof product.category === 'object' && product.category !== null && '_id' in product.category
@@ -214,8 +214,7 @@ class Controller {
                 _id: { $ne: product._id } // Exclude the current product
             }, ['category'], { perPage: 5, offset: 0 }, { created_at: -1 })
 
-            console.log(relatedProducts);
-            
+
 
             // grouped attributes by filterGroup
             const productWithDetails = product as unknown as IProductPopulated
@@ -259,6 +258,36 @@ class Controller {
         } catch (error) {
             console.log(error);
 
+            next(error)
+        }
+    }
+
+    public async search(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { q } = req.query
+            
+            if (!q || typeof q !== 'string') {
+                return res.status(400).send({
+                    success: false,
+                    message: "لطفا یک عبارت جستجو وارد کنید!"
+                })
+            }
+
+
+            const products = await this.productRepository.findMany({ $text: { $search: q } }, ['category'], { perPage: 9, offset: 0 }, { created_at: -1 })
+            
+            
+            if (!products || products.length === 0) {
+                return res.status(404).send({
+                    success: false,
+                    message: "محصولی یافت نشد!"
+                })
+            }
+
+            res.send(this.productTransformer.collection(products))
+        } catch (error) {
+            console.log(error);
+            
             next(error)
         }
     }

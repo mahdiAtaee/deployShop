@@ -48,7 +48,7 @@ export default class Controller {
             const { id } = await verify(req.headers.authorization as string)
             
             
-            const orders = await this.orderRepository.findMany({ user: id }, undefined, { perPage: 10, offset: 0 })
+            const orders = await this.orderRepository.findMany({ user: id }, ['orderLines.product'], { perPage: 10, offset: 0 })
             res.send(this.transformer.collection(orders))
         } catch (error) {
             next(error)

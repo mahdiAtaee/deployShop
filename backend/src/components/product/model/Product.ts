@@ -39,6 +39,8 @@ const ProductSchema: Schema = new Schema({
   status: { type: String, enum: ProductStatus, default: ProductStatus.INIT },
 });
 
+ProductSchema.index({ title: 'text'});
+
 // ProductSchema.virtual('thumbnailUrl').get(function (this: IProducts) {
 //   return `${process.env.APP_URL}/contents/${this.thumbnail}`
 // })
